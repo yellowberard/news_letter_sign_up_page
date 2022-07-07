@@ -32,15 +32,26 @@ app.post("/", (req, res) => {
     const url = "https://us10.api.mailchimp.com/3.0/lists/8a6bd467df"
     const options = {
         method: "POST",
-        auth: "yellowbeard:d50d50818ab70537bdb1312e4ed18f91-us10"
+        auth: "yellowbeard:92b2e38e46ef96d0c10e4e6ead41efd0-us10"
     }
     const request = https.request(url, options, (response) => {
+
+        if (response.statusCode == 200) {
+            res.sendFile(__dirname + "/success.html")
+        } else {
+            res.sendFile(__dirname + "/failure.html")
+        }
         response.on("data", (data) => {
             console.log(JSON.parse(data));
         })
+        console.log(response.statusCode);
+
     })
     request.write(jData);
     request.end();
+})
+app.post("/failure", (req, res) => {
+    res.redirect("/");
 })
 
 app.listen(6969, () => {
@@ -48,6 +59,6 @@ app.listen(6969, () => {
 });
 
 //api key
-//d50d50818ab70537bdb1312e4ed18f91-us10
+// 92b2e38e46ef96d0c10e4e6ead41efd0-us10
 // unique mail chimp id/list id
 //8a6bd467df
